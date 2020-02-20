@@ -11,7 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sage.Domain", "Sage.Entitie
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sage.App", "Sage.App", "{CBFF4FDF-D891-4859-8F8F-24BF4CC7C502}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sage.Web", "Sage.Web\Sage.Web.csproj", "{4CDB5A71-8A0E-4CEC-A4AF-F7F0B1E9B3C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sage.Web", "Sage.Web\Sage.Web.csproj", "{4CDB5A71-8A0E-4CEC-A4AF-F7F0B1E9B3C8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DBDE8EB5-253B-44FD-B585-D2ABF39B9199}"
+	ProjectSection(SolutionItems) = preProject
+		readme.txt = readme.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
