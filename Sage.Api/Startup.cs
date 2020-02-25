@@ -7,6 +7,8 @@ using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Sage.Data;
 using Sage.Data.Repositories;
+using Sage.Domain.Entities;
+using Sage.Domain.Validators;
 
 namespace Sage.Api
 {
@@ -34,11 +36,15 @@ namespace Sage.Api
             });
             services.AddMvc().AddNewtonsoftJson(options =>
             {
-                options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;                
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
+
             services.AddDbContext<Contexto>(options => options.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddScoped<ClienteRepository>();
+            services.AddScoped<Repository<Cliente>>();
+            services.AddScoped<Repository<Endereco>>();
+            services.AddScoped<ClienteValidator>();
+            services.AddScoped<EnderecoValidator>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, Contexto contexto)

@@ -2,7 +2,7 @@
 
 namespace Sage.Domain.Entities
 {
-    public class Endereco
+    public class Endereco 
     {
         public int Id { get; set; }
         public string Logradouro { get; set; }

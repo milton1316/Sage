@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Sage.Data.Repositories;
 using Sage.Domain.Entities;
+using Sage.Domain.Validators;
 using System.Collections.Generic;
 
 namespace Sage.Api.Controllers
@@ -9,41 +10,59 @@ namespace Sage.Api.Controllers
     [ApiController]
     public class ClientesController : ControllerBase
     {
-        private readonly ClienteRepository _clienteRepository;
+        private readonly Repository<Cliente> _repository;
+        private readonly ClienteValidator _validator;
 
-        public ClientesController(ClienteRepository clienteRepository)
+        public ClientesController(Repository<Cliente> repository, ClienteValidator validator)
         {
-            _clienteRepository = clienteRepository;
+            _repository = repository;
+            _validator = validator;
         }
 
         [HttpGet]
-        public IEnumerable<Cliente> Get()
+        public ActionResult<IEnumerable<Cliente>> Get()
         {
-            return _clienteRepository.Listar();            
+            return Ok(_repository.List());
         }
 
         [HttpGet("{id}")]
-        public Cliente Get(int id)
+        public ActionResult<Cliente> Get(int id)
         {
-            return _clienteRepository.Obter(id);
+            return Ok(_repository.Get(id));
         }
 
         [HttpPost]
-        public Cliente Post([FromBody] Cliente cliente)
+        public ActionResult<Cliente> Post([FromBody] Cliente cliente)
         {
-            return _clienteRepository.Incluir(cliente);
+            var validacao = _validator.Validate(cliente);            
+            if (validacao.IsValid)
+                return Ok(_repository.Add(cliente));
+            else
+                return BadRequest(validacao.Errors);
         }
 
         [HttpPut("{id}")]
-        public Cliente Put(int id, [FromBody] Cliente cliente)
+        public ActionResult<Cliente> Put(int id, [FromBody] Cliente cliente)
         {
-            return _clienteRepository.Atualizar(cliente);
+            if (id == 0)
+                BadRequest("O cliente informado não é valido");
+
+            cliente.Id = id;
+
+            var validacao = _validator.Validate(cliente);
+            if (validacao.IsValid)
+                return Ok(_repository.Update(cliente));
+            else
+                return BadRequest(validacao.Errors);
         }
 
         [HttpDelete("{id}")]
-        public bool Delete(int id)
+        public ActionResult<bool> Delete(int id)
         {
-            return _clienteRepository.Excluir(id);
+            if (id == 0)
+                BadRequest("O cliente informado não é valido");
+
+            return Ok(_repository.Delete(new Cliente { Id = id }));
         }
     }
 }

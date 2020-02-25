@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Sage.Domain.Entities
 {
-    public class Cliente
+    public class Cliente 
     {
         public int Id { get; set; }
         public string Nome { get; set; }
@@ -12,6 +12,6 @@ namespace Sage.Domain.Entities
         public string Cpf { get; set; }
         public DateTimeOffset DataNascimento { get; set; }
         public EstadoCivilEnum EstadoCivil { get; set; }
-        public virtual ICollection<Endereco> Enderecos { get; set; }
+        public virtual Endereco Endereco { get; set; }
     }
 }

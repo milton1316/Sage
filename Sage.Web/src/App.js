@@ -1,7 +1,7 @@
 import './App.css';
 import React from 'react';
 import { Container, AppBar, Toolbar, Typography } from '@material-ui/core';
-import FormularioBox from "./Formulario";
+import StepBox from "./Steps";
 
 function App() {
 
@@ -12,7 +12,7 @@ function App() {
           <Typography variant="h5" align="center" style={{ flexGrow: 1 }} >Cadastro de Clientes</Typography>
         </Toolbar>
       </AppBar>
-      <FormularioBox style={{ backgroundColor: "#F5F5F5"}}></FormularioBox>
+      <StepBox></StepBox>      
     </Container>
   );
 }

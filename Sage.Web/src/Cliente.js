@@ -1,127 +1,50 @@
 import React, { Component } from 'react';
-import $ from "jquery";
 import { Grid, TextField, MenuItem, Button, IconButton } from '@material-ui/core';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 
-function formartarData(data) {
-    function pad(s) { return (s < 10) ? '0' + s : s; }
-    var d = new Date(data)
-    return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join('/')
-}
-
-export default class ClienteBox extends Component {
-
-    constructor() {
-        super();
-
-        this.state = {
-            clientes: [],
-            id: 0, nome: '', sobrenome: '', cpf: '', dataNascimento: '', estadoCivil: 0
-        }
-        this.editar = this.editar.bind(this);
-        this.excluir = this.excluir.bind(this);
-        this.setValor = this.setValor.bind(this);
-    }
-
-    componentDidMount() {
-        $.ajax({
-            url: "http://localhost:8000/api/clientes",
-            dataType: "json",
-            success: function (clientes) {
-                clientes.forEach(function (item) {
-                    item.dataNascimento = formartarData(item.dataNascimento);
-                })
-                this.setState({ clientes });
-            }.bind(this)
-        })
-    }
-
-    editar(cliente) {
-        this.setState({ ...cliente }, () => {
-            this.setState({ ...cliente });
-        });
-    }
-
-    setValor(propriedade, valor) {
-        this.setState({ [propriedade]: valor });
-    }
-
-    salvar() {
-        if (this.state.id)
-            this.atualizar();
-        else
-            this.incluir();
-    }
-
-    incluir() {
-        $.ajax({
-            url: "http://localhost:8000/api/clientes",
-            contentType: "application/json",
-            dataType: "json",
-            type: "post",
-            data: JSON.stringify({ nome: this.state.nome, sobrenome: this.state.sobrenome, cpf: this.state.cpf, dataNascimento: this.state.dataNascimento, estadoCivil: this.state.estadoCivil }),
-            success: function (cliente) {
-                this.setState({ id: cliente.id });
-                this.props.irParaStep(1);
-            }.bind(this),
-            error: function (erro) {
-                console.log(erro);
-            }
-        })
-    }
-
-    atualizar() {
-        $.ajax({
-            url: "http://localhost:8000/api/clientes/" + this.state.id,
-            contentType: "application/json",
-            dataType: "json",
-            type: "put",
-            data: JSON.stringify({ id: this.state.id, nome: this.state.nome, sobrenome: this.state.sobrenome, cpf: this.state.cpf, dataNascimento: this.state.dataNascimento, estadoCivil: this.state.estadoCivil }),
-            success: function (cliente) {
-                console.log(cliente);
-                this.props.irParaStep(1);
-            }.bind(this),
-            error: function (erro) {
-                console.log(erro);
-            }
-        })
-    }
-
-    excluir(id) {        
-        $.ajax({
-            url: "http://localhost:8000/api/clientes/" + id,
-            contentType: "application/json",
-            dataType: "json",
-            type: "delete",
-            success: function (resposta) {
-                if(resposta) {
-                    this.setState({
-                        clientes: this.state.clientes.filter(function (cliente) {
-                            return cliente.id !== id
-                        })
-                    });
-                }
-            }.bind(this),
-            error: function (erro) {
-                console.log(erro);
-            }
-        })
-    }
+export class ListagemCliente extends Component {
 
     render() {
         return (
             <Grid container>
-                <Grid item md={12}>
-                    <FormularioCliente cliente={this.state} setValor={this.setValor}></FormularioCliente>
-                </Grid>
-                <Grid item md={12} style={{ marginTop: "20px" }}>
-                    <ListagemCliente clientes={this.state.clientes} editar={this.editar} excluir={this.excluir}></ListagemCliente>
-                </Grid>
+                <TableContainer component={Paper} style={{ height: "300px", overflowX: "hidden", overflowY: "auto" }}>
+                    <Table stickyHeader>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Nome</TableCell>
+                                <TableCell>Sobrenome</TableCell>
+                                <TableCell>CPF</TableCell>
+                                <TableCell style={{ width: 100 }}>Ações</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {
+                                this.props.clientes.map(function (cliente) {
+                                    return (
+                                        <TableRow key={cliente.id}>
+                                            <TableCell>{cliente.nome}</TableCell>
+                                            <TableCell>{cliente.sobrenome}</TableCell>
+                                            <TableCell>{cliente.cpf}</TableCell>
+                                            <TableCell>
+                                                <IconButton color="primary" onClick={() => this.props.editar(cliente)}>
+                                                    <EditIcon></EditIcon>
+                                                </IconButton>
+                                                <IconButton color="secondary" onClick={() => this.props.excluir(cliente.id)}>
+                                                    <DeleteIcon></DeleteIcon>
+                                                </IconButton>
+                                            </TableCell>
+                                        </TableRow>
+                                    );
+                                }.bind(this))
+                            }
+                        </TableBody>
+                    </Table>
+                </TableContainer>
                 <Grid container spacing={2} style={{ marginTop: "20px" }}>
-                    <Grid item md={12}>
-                        <Button color="primary" variant="contained" onClick={this.salvar.bind(this)} style={{ float: "right" }}>Próximo</Button>
+                    <Grid item md={12} xs={12}>
+                        <Button color="primary" variant="contained" onClick={this.props.novo} style={{ float: "right" }}>Novo</Button>
                     </Grid>
                 </Grid>
             </Grid>
@@ -129,79 +52,71 @@ export default class ClienteBox extends Component {
     }
 }
 
-export class ListagemCliente extends Component {
-
-    render() {
-        return (
-            <TableContainer component={Paper} style={{ height: "300px", overflowX: "hidden", overflowY: "auto" }}>
-                <Table stickyHeader>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Nome</TableCell>
-                            <TableCell>Sobrenome</TableCell>
-                            <TableCell>CPF</TableCell>
-                            <TableCell style={{ width: 100 }}>Ações</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {
-                            this.props.clientes.map(function (cliente) {
-                                return (
-                                    <TableRow key={cliente.id}>
-                                        <TableCell>{cliente.nome}</TableCell>
-                                        <TableCell>{cliente.sobrenome}</TableCell>
-                                        <TableCell>{cliente.cpf}</TableCell>
-                                        <TableCell>
-                                            <IconButton color="primary" onClick={() => this.props.editar(cliente)}>
-                                                <EditIcon></EditIcon>
-                                            </IconButton>
-                                            <IconButton color="secondary" onClick={() => this.props.excluir(cliente.id)}>
-                                                <DeleteIcon></DeleteIcon>
-                                            </IconButton>
-                                        </TableCell>
-                                    </TableRow>
-                                );
-                            }.bind(this))
-                        }
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        );
-    }
-}
-
 export class FormularioCliente extends Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            id: props.cliente.id ? props.cliente.id : 0,
+            nome: props.cliente.nome ? props.cliente.nome : '',
+            sobrenome: props.cliente.sobrenome ? props.cliente.sobrenome : '',
+            cpf: props.cliente.cpf ? props.cliente.cpf : '',
+            dataNascimento: props.cliente.dataNascimento ? props.cliente.dataNascimento : '',
+            estadoCivil: props.cliente.estadoCivil ? props.cliente.estadoCivil : 0,
+            endereco: props.cliente.endereco ? props.cliente.endereco : {}
+        }
+    }
+
+    proximo() {
+        const cliente = Object.assign(this.state);
+        this.props.irParaStep(2, this.props.obter(cliente));
+    }
+
     render() {
         return (
-            <form style={{ marginTop: "20px" }}>
-                <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        <Grid container spacing={2}>
-                            <Grid item md={4}>
-                                <TextField label="Nome" variant="outlined" fullWidth value={this.props.cliente.nome} onChange={(evento) => this.props.setValor('nome', evento.target.value)} />
+            <Grid container direction="row">
+                <Grid item md={12} xs={12}>
+                    <Grid container style={{ marginTop: "20px" }}>
+                        <Grid item md={12}>
+                            <input type="hidden" value={this.state.id} ref={(input) => this.id = input} />
+                            <Grid container spacing={2}>
+                                <Grid item md={4} sm={12}>
+                                    <TextField label="Nome" variant="outlined" fullWidth value={this.state.nome} onChange={(input) => this.setState({ nome: input.target.value })} />
+                                </Grid>
+                                <Grid item md={8} sm={12}>
+                                    <TextField label="Sobrenome" variant="outlined" fullWidth value={this.state.sobrenome} onChange={(input) => this.setState({ sobrenome: input.target.value })} />
+                                </Grid>
                             </Grid>
-                            <Grid item md={8}>
-                                <TextField label="Sobrenome" variant="outlined" fullWidth value={this.props.cliente.sobrenome} onChange={(evento) => this.props.setValor('sobrenome', evento.target.value)} />
-                            </Grid>
-                        </Grid>
-                        <Grid container spacing={2}>
-                            <Grid item md={4}>
-                                <TextField label="CPF" variant="outlined" fullWidth value={this.props.cliente.cpf} onChange={(evento) => this.props.setValor('cpf', evento.target.value)} />
-                            </Grid>
-                            <Grid item md={4}>
-                                <TextField label="Data de nascimento" variant="outlined" fullWidth value={this.props.cliente.dataNascimento} onChange={(evento) => this.props.setValor('dataNascimento', evento.target.value)} />
-                            </Grid>
-                            <Grid item md={4}>
-                                <TextField label="Estado civil" variant="outlined" select fullWidth value={this.props.cliente.estadoCivil} onChange={(evento) => this.props.setValor('estadoCivil', evento.target.value)}>
-                                    <MenuItem key="1" value="1">Solteiro</MenuItem>
-                                    <MenuItem key="2" value="2">Casado</MenuItem>
-                                </TextField>
+                            <Grid container spacing={2}>
+                                <Grid item md={4} sm={12}>
+                                    <TextField label="CPF" variant="outlined" fullWidth value={this.state.cpf} onChange={(input) => this.setState({ cpf: input.target.value })} />
+                                </Grid>
+                                <Grid item md={4} sm={12}>
+                                    <TextField label="Data de nascimento" variant="outlined" fullWidth value={this.state.dataNascimento} onChange={(input) => this.setState({ dataNascimento: input.target.value })} />
+                                </Grid>
+                                <Grid item md={4} sm={12}>
+                                    <TextField label="Estado civil" variant="outlined" select fullWidth defaultValue={0} value={this.state.estadoCivil} onChange={(input) => this.setState({ estadoCivil: input.target.value })} >
+                                        <MenuItem key={0} value={0}>Selecione</MenuItem>
+                                        <MenuItem key={1} value={1}>Solteiro</MenuItem>
+                                        <MenuItem key={2} value={2}>Casado</MenuItem>
+                                    </TextField>
+                                </Grid>
                             </Grid>
                         </Grid>
                     </Grid>
                 </Grid>
-            </form>
+                <Grid item md={12} xs={12} style={{ marginTop: "20px" }}>
+                    <Grid container direction="row">
+                        <Grid item md={6}>
+                            <Button color="primary" variant="contained" onClick={() => this.props.irParaStep(0)}>Anterior</Button>
+                        </Grid>
+                        <Grid item md={6}>
+                            <Button color="primary" variant="contained" onClick={this.proximo.bind(this)} style={{ float: "right" }}>Próximo</Button>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
         );
     }
 }

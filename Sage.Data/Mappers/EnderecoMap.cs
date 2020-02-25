@@ -16,8 +16,7 @@ namespace Sage.Data.Mappers
             model.Property(x => x.Cep).IsRequired();
             model.Property(x => x.Bairro).IsRequired();
             model.Property(x => x.Cidade).IsRequired();
-            model.Property(x => x.Estado).IsRequired();
-            model.HasOne(x => x.Cliente).WithMany(x => x.Enderecos).HasForeignKey(x => x.ClienteId);
+            model.Property(x => x.Estado).IsRequired();                        
         }
     }
 }

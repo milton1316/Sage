@@ -27,30 +27,30 @@ Serão avaliados pontos como: Usabilidade, boas práticas de programação, UI equal
 Entrega do Projeto:
 	Intruções de execução:
 		Baixar o projeto do github, nele encontra-se o backend e o frontend:
-		Backend: Selecionar como projeto principal o Sage.Api e executar pelo visual studio ou linha de comando
+		Backend: Selecionar como projeto principal o Sage.Api e executar pelo visual studio ou linha de comando (dotnet)
 		Frontend: É o projeto Sage.Web, na verdade é para ser apenas uma pasta, abrir a pasta e executar o cmd o comando "npm start"
 
 	O que o projeto contempla:
 	    No backend um crud de cliente utilizando um banco sql server local (não precisa apontar para o sql express).
-		No frontend um crud de cliente dentro do primeiro step.
-		A unica tecnologia pedida não utilizada foi o redux
+		No frontend uma listagem de clientes no primeiro step, um cadastro de clientes no segundo step e um cadastro de endereços no terceiro step.
+		A unica tecnologia pedida não utilizada foi o redux.
 
 	Importante:Projeto ainda não finalizado
-		O que falta:
-		   - Todo o Crud de endereço (frontend e backend)
-		   - Validação do formulário e no banckend do cadastro de cliente
-		   - Melhorar input de data (campo data de nascimento)
-		   - Confirmação na hora de excluir um cliente
+		O que falta:		   
+		   - Validação do formulário
+		   - Melhorar input de data (campo data de nascimento)		
+		   - Mascara de cpf
 		   - Utilização do redux
 
-	Explicãção do projeto
+	Explicação do projeto
 		Backend: Estruturei o projeto em 3 camadas:
 			- Data onde utilizar EF Core para comunicar com o banco Sql Server, usei uma abordagem Code First;
 			- Domain, por enquanto tem apenas as entidades sem validação, a idéia é aplicar apenas alguns conceitos de DDD;
 			- API camada de apresentação, só a controller de cliente está com CRUD funcional;
 
 		Frontend: Projeto React
-			- Criei alguns componentes e utilizei o material ui, não utilizei o redux, pois como meus conhecimentos em react são básicos
-			  não me senti seguro em arriscar muito na arquitetura do front;
+			- Criei componentes onde cada cadastro tem seu próprio state, e faço a comunicação entre os componentes através de funções de callback;
+			- Centralizei todas as funcionalidades no componente Step, para deixar os componentes menores focados apenas em view, a idéia é tirar a lógica e isolar em uma classe;
+			- Utilizei o material ui, não utilizei o redux, o motivo é que ainda estou apredendo sobre o react e não estudei sobre o redux ainda então não me senti seguro em arriscar muito na arquitetura do front;
 
 

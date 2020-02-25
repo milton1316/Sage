@@ -16,7 +16,7 @@ namespace Sage.Data.Mappers
             model.Property(x => x.Cpf).IsRequired();
             model.Property(x => x.DataNascimento).IsRequired();
             model.Property(x => x.EstadoCivil).IsRequired();
-            model.HasMany(x => x.Enderecos).WithOne(x => x.Cliente).HasForeignKey(x => x.ClienteId).OnDelete(DeleteBehavior.Cascade);
+            model.HasOne(x => x.Endereco).WithOne(x => x.Cliente).HasForeignKey<Endereco>(x => x.ClienteId).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
