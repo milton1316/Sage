@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
-import { Grid, TextField, MenuItem, Button, IconButton } from '@material-ui/core';
+import { Grid, MenuItem, Button, IconButton } from '@material-ui/core';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
+import InputMask from "react-input-mask";
 
 export class ListagemCliente extends Component {
 
@@ -62,7 +66,7 @@ export class FormularioCliente extends Component {
             nome: props.cliente.nome ? props.cliente.nome : '',
             sobrenome: props.cliente.sobrenome ? props.cliente.sobrenome : '',
             cpf: props.cliente.cpf ? props.cliente.cpf : '',
-            dataNascimento: props.cliente.dataNascimento ? props.cliente.dataNascimento : '',
+            dataNascimento: props.cliente.dataNascimento ? props.cliente.dataNascimento : new Date(),
             estadoCivil: props.cliente.estadoCivil ? props.cliente.estadoCivil : 0,
             endereco: props.cliente.endereco ? props.cliente.endereco : {}
         }
@@ -75,48 +79,60 @@ export class FormularioCliente extends Component {
 
     render() {
         return (
-            <Grid container direction="row">
-                <Grid item md={12} xs={12}>
-                    <Grid container style={{ marginTop: "20px" }}>
-                        <Grid item md={12}>
-                            <input type="hidden" value={this.state.id} ref={(input) => this.id = input} />
-                            <Grid container spacing={2}>
-                                <Grid item md={4} sm={12}>
-                                    <TextField label="Nome" variant="outlined" fullWidth value={this.state.nome} onChange={(input) => this.setState({ nome: input.target.value })} />
+            <ValidatorForm onSubmit={this.proximo.bind(this)}>
+                <Grid container direction="row">
+                    <Grid item md={12} xs={12}>
+                        <Grid container style={{ marginTop: "20px" }}>
+                            <Grid item md={12}>
+                                <input type="hidden" value={this.state.id} ref={(input) => this.id = input} />
+                                <Grid container spacing={2}>
+                                    <Grid item md={4} sm={12}>
+                                        <TextValidator label="Nome" variant="outlined" fullWidth value={this.state.nome}
+                                            onChange={(input) => this.setState({ nome: input.target.value })}
+                                            validators={['required', 'minStringLength:2']} errorMessages={['Campo obrigatório', 'Deve ter no minimo 2 caracteres']} />
+                                    </Grid>
+                                    <Grid item md={8} sm={12}>
+                                        <TextValidator label="Sobrenome" variant="outlined" fullWidth value={this.state.sobrenome}
+                                            onChange={(input) => this.setState({ sobrenome: input.target.value })} />
+                                    </Grid>
                                 </Grid>
-                                <Grid item md={8} sm={12}>
-                                    <TextField label="Sobrenome" variant="outlined" fullWidth value={this.state.sobrenome} onChange={(input) => this.setState({ sobrenome: input.target.value })} />
-                                </Grid>
-                            </Grid>
-                            <Grid container spacing={2}>
-                                <Grid item md={4} sm={12}>
-                                    <TextField label="CPF" variant="outlined" fullWidth value={this.state.cpf} onChange={(input) => this.setState({ cpf: input.target.value })} />
-                                </Grid>
-                                <Grid item md={4} sm={12}>
-                                    <TextField label="Data de nascimento" variant="outlined" fullWidth value={this.state.dataNascimento} onChange={(input) => this.setState({ dataNascimento: input.target.value })} />
-                                </Grid>
-                                <Grid item md={4} sm={12}>
-                                    <TextField label="Estado civil" variant="outlined" select fullWidth defaultValue={0} value={this.state.estadoCivil} onChange={(input) => this.setState({ estadoCivil: input.target.value })} >
-                                        <MenuItem key={0} value={0}>Selecione</MenuItem>
-                                        <MenuItem key={1} value={1}>Solteiro</MenuItem>
-                                        <MenuItem key={2} value={2}>Casado</MenuItem>
-                                    </TextField>
+                                <Grid container spacing={2}>
+                                    <Grid item md={4} sm={12}>
+                                        <InputMask mask="999.999.999-99" value={this.state.cpf} onChange={(input) => this.setState({ cpf: input.target.value })}>
+                                            <TextValidator label="CPF" variant="outlined" fullWidth validators={['required']} errorMessages={['Campo obrigatório']} />
+                                        </InputMask>
+                                    </Grid>
+                                    <Grid item md={4} sm={12}>
+                                        <TextValidator label="Estado civil" variant="outlined" select fullWidth defaultValue={0}
+                                            value={this.state.estadoCivil} validators={['minNumber:1']} errorMessages={['Campo obrigatório']}
+                                            onChange={(input) => this.setState({ estadoCivil: input.target.value })} >
+                                            <MenuItem key={0} value={0}>Selecione</MenuItem>
+                                            <MenuItem key={1} value={1}>Solteiro</MenuItem>
+                                            <MenuItem key={2} value={2}>Casado</MenuItem>
+                                        </TextValidator>
+                                    </Grid>
+                                    <Grid item md={4} sm={12}>
+                                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                            <DatePicker variant="outlined" margin="dense" autoOk format="dd/MM/yyyy" label="Data de nascimento" fullWidth value={this.state.dataNascimento} onChange={(input) => this.setState({ dataNascimento: input })} />
+                                        </MuiPickersUtilsProvider>
+                                    </Grid>
                                 </Grid>
                             </Grid>
                         </Grid>
                     </Grid>
-                </Grid>
-                <Grid item md={12} xs={12} style={{ marginTop: "20px" }}>
-                    <Grid container direction="row">
-                        <Grid item md={6}>
-                            <Button color="primary" variant="contained" onClick={() => this.props.irParaStep(0)}>Anterior</Button>
-                        </Grid>
-                        <Grid item md={6}>
-                            <Button color="primary" variant="contained" onClick={this.proximo.bind(this)} style={{ float: "right" }}>Próximo</Button>
+                    <Grid item md={12} xs={12} style={{ marginTop: "20px" }}>
+                        <Grid container direction="row">
+                            <Grid item md={6}>
+                                <Button color="primary" variant="contained" onClick={() => this.props.irParaStep(0)}>Anterior</Button>
+                            </Grid>
+                            <Grid item md={6}>
+                                <Button type="submit" color="primary" variant="contained" style={{ float: "right" }}>Próximo</Button>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Grid>
-            </Grid>
+            </ValidatorForm>
+
         );
     }
 }

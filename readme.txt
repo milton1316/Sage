@@ -25,23 +25,20 @@ Serão avaliados pontos como: Usabilidade, boas práticas de programação, UI equal
 
 -----------------------------------------------------------------------------------------------------------------------------------
 Entrega do Projeto:
+	Ferramentas utilizadas:
+		Visual Studio 2019 community
+		Visual Code
+
 	Intruções de execução:
 		Baixar o projeto do github, nele encontra-se o backend e o frontend:
 		Backend: Selecionar como projeto principal o Sage.Api e executar pelo visual studio ou linha de comando (dotnet)
-		Frontend: É o projeto Sage.Web, na verdade é para ser apenas uma pasta, abrir a pasta e executar o cmd o comando "npm start"
+		Frontend: É o projeto Sage.Web, na verdade é para ser apenas uma pasta, abrir a pasta e executar no cmd o comando "npm start" ou "serve -s build"
 
 	O que o projeto contempla:
 	    No backend um crud de cliente utilizando um banco sql server local (não precisa apontar para o sql express).
 		No frontend uma listagem de clientes no primeiro step, um cadastro de clientes no segundo step e um cadastro de endereços no terceiro step.
 		A unica tecnologia pedida não utilizada foi o redux.
-
-	Importante:Projeto ainda não finalizado
-		O que falta:		   
-		   - Validação do formulário
-		   - Melhorar input de data (campo data de nascimento)		
-		   - Mascara de cpf
-		   - Utilização do redux
-
+			
 	Explicação do projeto
 		Backend: Estruturei o projeto em 3 camadas:
 			- Data onde utilizar EF Core para comunicar com o banco Sql Server, usei uma abordagem Code First;

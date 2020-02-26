@@ -6,12 +6,6 @@ import $ from "jquery";
 import { ListagemCliente, FormularioCliente } from './Cliente';
 import { FormularioEndereco } from './Endereco';
 
-function formartarData(data) {
-    function pad(s) { return (s < 10) ? '0' + s : s; }
-    var d = new Date(data)
-    return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join('/');
-}
-
 export default class Steps extends Component {
     constructor() {
         super()
@@ -48,10 +42,7 @@ export default class Steps extends Component {
         $.ajax({
             url: "http://localhost:8000/api/clientes",
             dataType: "json",
-            success: function (clientes) {
-                clientes.forEach(function (item) {
-                    item.dataNascimento = formartarData(item.dataNascimento);
-                })
+            success: function (clientes) {               
                 this.setState({ clientes });
             }.bind(this)
         })
@@ -101,7 +92,6 @@ export default class Steps extends Component {
             data: JSON.stringify(this.cliente),
             success: function (cliente) {
 
-                cliente.dataNascimento = formartarData(cliente.dataNascimento);
                 const clientes = this.state.clientes;
                 clientes.push(cliente);
 
@@ -140,7 +130,6 @@ export default class Steps extends Component {
             data: JSON.stringify(this.cliente),
             success: function (cliente) {
 
-                cliente.dataNascimento = formartarData(cliente.dataNascimento);
                 const clientes = this.state.clientes;
                 const i = clientes.findIndex(item => item.id === cliente.id)
                 clientes[i] = cliente;
@@ -155,7 +144,7 @@ export default class Steps extends Component {
                 });
                 this.cliente = {};
                 this.irParaStep(0);
-                
+
             }.bind(this),
             error: function (erro) {
                 console.log(erro);

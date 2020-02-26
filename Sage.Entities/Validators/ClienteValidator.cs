@@ -12,10 +12,7 @@ namespace Sage.Domain.Validators
             RuleFor(x => x.Nome)
                 .NotNull().WithMessage("O campo nome é obrigatório.")
                 .MinimumLength(2).WithMessage("O campo nome deve ter no mínimo 2 caracteres.");
-
-            RuleFor(x => x.Sobrenome)                            
-                .MinimumLength(2).WithMessage("O campo nome deve ter no mínimo 2 caracteres.");
-
+                        
             RuleFor(x => x.Cpf)
                 .Transform(x => !string.IsNullOrEmpty(x) ? x.Replace("-", "").Replace(".", "") : null)
                 .NotNull().WithMessage("O campo cpf é obrigatório.")
