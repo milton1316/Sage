@@ -1,53 +1,54 @@
-Projeto de teste da Sage
+## Projeto de teste da Sage
 
-Cen·rio:
-Implementar uma rotina de cadastro de pessoa e endereÁo utilizando o conceito de wizard, onde os dados de pessoas estar„o presentes no primeiro step e os endereÁos no segundo step.
+Cen√°rio:
+Implementar uma rotina de cadastro de pessoa e endere√ßo utilizando o conceito de wizard, onde os dados de pessoas estar√£o presentes no primeiro step e os endere√ßos no segundo step.
 
-ObservaÁıes:
-O projeto deve contemplar uma listagem de pessoas, ediÁ„o, consulta e exclus„o nos dois steps.
+Observa√ß√µes:
+O projeto deve contemplar uma listagem de pessoas, edi√ß√£o, consulta e exclus√£o nos dois steps.
 
 Tecnologias
 	Frontend
-	ï React JS
-	ï Redux
-	ï Material UI
-	ï … essencial utilizar recursos de componentizaÁ„o do React JS
+	‚Ä¢ React JS
+	‚Ä¢ Redux
+	‚Ä¢ Material UI
+	‚Ä¢ √â essencial utilizar recursos de componentiza√ß√£o do React JS
 
 	Backend (Se especialisra em Dev Front End, usar o https://www.mocky.io/ na parte de backend)
-	ï NET Core
-	ï EF Core
-	ï MySQl, PostgreSQL ou SQL Server
+	‚Ä¢ NET Core
+	‚Ä¢ EF Core
+	‚Ä¢ MySQl, PostgreSQL ou SQL Server
 
-Entrega e documentaÁ„o
-Dever· ser disponibilizada no repositÛrio p˙blico do GitHub, bem como os passos para execuÁ„o e validaÁ„o do projeto.
-ApÛs receber esse teste, por gentileza, estipular o prazo de execuÁ„o e me enviar no prÛximo dia ˙til.
-Ser„o avaliados pontos como: Usabilidade, boas pr·ticas de programaÁ„o, UI equalidade do cÛdigo.
+Entrega e documenta√ß√£o
+Dever√° ser disponibilizada no reposit√≥rio p√∫blico do GitHub, bem como os passos para execu√ß√£o e valida√ß√£o do projeto.
+Ap√≥s receber esse teste, por gentileza, estipular o prazo de execu√ß√£o e me enviar no pr√≥ximo dia √∫til.
+Ser√£o avaliados pontos como: Usabilidade, boas pr√°ticas de programa√ß√£o, UI equalidade do c√≥digo.
 
 -----------------------------------------------------------------------------------------------------------------------------------
-Entrega do Projeto:
-	Ferramentas utilizadas:
-		Visual Studio 2019 community
-		Visual Code
+##Entrega do Projeto:
+	
+##Ferramentas utilizadas:
+    Visual Studio 2019 community
+    Visual Code
 
-	IntruÁıes de execuÁ„o:
-		Baixar o projeto do github, nele encontra-se o backend e o frontend:
-		Backend: Selecionar como projeto principal o Sage.Api e executar pelo visual studio ou linha de comando (dotnet)
-		Frontend: … o projeto Sage.Web, na verdade È para ser apenas uma pasta, abrir a pasta e executar no cmd o comando "npm start" ou "serve -s build"
+##Intru√ß√µes de execu√ß√£o:
+    Baixar o projeto do github, nele encontra-se o backend e o frontend:
+    Backend: Selecionar como projeto principal o Sage.Api e executar pelo visual studio ou linha de comando (dotnet)
+    Frontend: √â o projeto Sage.Web, na verdade √© para ser apenas uma pasta, abrir a pasta e executar no cmd o comando "npm start" ou "serve -s build"
 
-	O que o projeto contempla:
-	    No backend um crud de cliente utilizando um banco sql server local (n„o precisa apontar para o sql express).
-		No frontend uma listagem de clientes no primeiro step, um cadastro de clientes no segundo step e um cadastro de endereÁos no terceiro step.
-		A unica tecnologia pedida n„o utilizada foi o redux.
+##O que o projeto contempla:
+    No backend um crud de cliente utilizando um banco sql server local (n√£o precisa apontar para o sql express).
+    No frontend uma listagem de clientes no primeiro step, um cadastro de clientes no segundo step e um cadastro de endere√ßos no terceiro step.
+    A unica tecnologia pedida n√£o utilizada foi o redux.
 			
-	ExplicaÁ„o do projeto
-		Backend: Estruturei o projeto em 3 camadas:
-			- Data onde utilizar EF Core para comunicar com o banco Sql Server, usei uma abordagem Code First;
-			- Domain, por enquanto tem apenas as entidades sem validaÁ„o, a idÈia È aplicar apenas alguns conceitos de DDD;
-			- API camada de apresentaÁ„o, sÛ a controller de cliente est· com CRUD funcional;
+##Explica√ß√£o do projeto
+    Backend: Estruturei o projeto em 3 camadas:
+	Data onde utilizar EF Core para comunicar com o banco Sql Server, usei uma abordagem Code First;
+	Domain, por enquanto tem apenas as entidades sem valida√ß√£o, a id√©ia √© aplicar apenas alguns conceitos de DDD;
+	API camada de apresenta√ß√£o, s√≥ a controller de cliente est√° com CRUD funcional;
 
-		Frontend: Projeto React
-			- Criei componentes onde cada cadastro tem seu prÛprio state, e faÁo a comunicaÁ„o entre os componentes atravÈs de funÁıes de callback;
-			- Centralizei todas as funcionalidades no componente Step, para deixar os componentes menores focados apenas em view, a idÈia È tirar a lÛgica e isolar em uma classe;
-			- Utilizei o material ui, n„o utilizei o redux, o motivo È que ainda estou apredendo sobre o react e n„o estudei sobre o redux ainda ent„o n„o me senti seguro em arriscar muito na arquitetura do front;
+    Frontend: Projeto React
+	Criei componentes onde cada cadastro tem seu pr√≥prio state, e fa√ßo a comunica√ß√£o entre os componentes atrav√©s de fun√ß√µes de callback;
+	Centralizei todas as funcionalidades no componente Step, para deixar os componentes menores focados apenas em view, a id√©ia √© tirar a l√≥gica e isolar em uma classe;
+	Utilizei o material ui, n√£o utilizei o redux, o motivo √© que ainda estou apredendo sobre o react e n√£o estudei sobre o redux ainda ent√£o n√£o me senti seguro em arriscar muito na arquitetura do front;
 
 
