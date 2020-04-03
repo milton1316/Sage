@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Sage.Data.Repositories;
 using Sage.Domain.Entities;
+using Sage.Domain.Interfaces;
 using Sage.Domain.Validators;
 using System.Collections.Generic;
 
@@ -10,19 +11,20 @@ namespace Sage.Api.Controllers
     [ApiController]
     public class ClientesController : ControllerBase
     {
-        private readonly Repository<Cliente> _repository;
+        private readonly IClienteRepository _repository;
         private readonly ClienteValidator _validator;
 
-        public ClientesController(Repository<Cliente> repository, ClienteValidator validator)
+        public ClientesController(IClienteRepository repository, ClienteValidator validator)
         {
             _repository = repository;
             _validator = validator;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Cliente>> Get()
+        public ActionResult<List<Cliente>> Get()
         {
-            return Ok(_repository.List());
+            var clientes = _repository.List();
+            return Ok(clientes);
         }
 
         [HttpGet("{id}")]

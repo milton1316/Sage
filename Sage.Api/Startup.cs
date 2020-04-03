@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using Sage.Data;
 using Sage.Data.Repositories;
 using Sage.Domain.Entities;
+using Sage.Domain.Interfaces;
 using Sage.Domain.Validators;
 
 namespace Sage.Api
@@ -41,7 +42,8 @@ namespace Sage.Api
             });
 
             services.AddDbContext<Contexto>(options => options.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddScoped<Repository<Cliente>>();
+            services.AddScoped<IClienteRepository, ClienteRepository>();
+            //services.AddScoped<Repository<Cliente>>();
             services.AddScoped<Repository<Endereco>>();
             services.AddScoped<ClienteValidator>();
             services.AddScoped<EnderecoValidator>();
