@@ -1,5 +1,6 @@
 ## Projeto de teste da Sage
 
+
 Cenário:
 Implementar uma rotina de cadastro de pessoa e endereço utilizando o conceito de wizard, onde os dados de pessoas estarão presentes no primeiro step e os endereços no segundo step.
 
